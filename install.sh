@@ -12,7 +12,7 @@ echo "nortron can now use sudo without a password."
 sudo pacman -Syu --noconfirm
 
 # Install neovim, remmina (with RDP plugin), and brave
-sudo pacman -S --noconfirm neovim remmina remmina-plugin-rdp cifs-utlils timeshift samba tk
+sudo pacman -S --noconfirm neovim remmina remmina-plugin-rdp cifs-utils timeshift samba tk
 # Install timeshift for system snapshots
 # Install cifs-utils for mounting CIFS shares
 
@@ -47,15 +47,16 @@ sudo mkdir -p /mnt/share/timeshift
 echo "Created /mnt/share/unraid/Backups, /mnt/share/unraid/isos, and /mnt/share/unraid/downloads"
 sudo mv ~/.local/share/scripts/credentials_unraid  /etc/samba/credentials_unraid
 echo "Moved credentials_unraid to /etc/samba/credentials_unraid"
-bash ~/.local/share/scripts/mount_unraid.sh
+bash ~/.local/share/scripts/unraid.sh
 # Copy .zshrc to home directory and source it
 sudo mv ~/.local/share/scripts/.zshrc ~/
 echo "Moved .zshrc to home directory."
-source ~/.zshrc
+
 echo "Sourced .zshrc"
 sudo cp -r /mnt/share/unraid/Backup/Arch/.remmina ~/.config/remmina 
 sudo cp -r /mnt/share/unraid/Backup/Arch/remmina ~/.local/share/remmina 
 echo "Copied Remmina configuration to /remmina"
+sudo mv ~/.local/share/scripts/Keybinds.conf ~/.conf/hypr/configs/Keybinds.conf
 # Install Visual Studio Code (from AUR, needs yay or paru)
 if command -v yay &>/dev/null; then
     yay -S --noconfirm visual-studio-code-bin
