@@ -1,0 +1,1 @@
+remmina -c ~/.local/share/remmina/group_rdp_hyper_192-168-1-25.remmina
