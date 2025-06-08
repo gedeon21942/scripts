@@ -33,7 +33,7 @@ elif command -v paru &>/dev/null; then
 else
     echo "Please install yay or paru to install Brave browser from AUR."
 fi
-mv ~/.local/remmina ~/.local/share/remmina
+
 
 # Create folder structure for unraid shares
 
@@ -43,9 +43,24 @@ sudo mkdir -p /mnt/share/unraid/domain
 sudo mkdir -p /mnt/share/unraid/appdata
 sudo mkdir -p /mnt/share/unraid/Data
 sudo mkdir -p /mnt/share/unraid/Backup
-
+sudo mkdir -p /mnt/share/timeshift
 echo "Created /mnt/share/unraid/Backups, /mnt/share/unraid/isos, and /mnt/share/unraid/downloads"
-mv ~/.local/share/scripts/.zshrc ~/
+sudo mv ~/.local/share/scripts/credentials_unraid  /etc/samba/credentials_unraid
+echo "Moved credentials_unraid to /etc/samba/credentials_unraid"
+bash ~/.local/share/scripts/mount_unraid.sh
+# Copy .zshrc to home directory and source it
+sudo mv ~/.local/share/scripts/.zshrc ~/
 echo "Moved .zshrc to home directory."
 source ~/.zshrc
 echo "Sourced .zshrc"
+sudo cp -r /mnt/share/unraid/Backup/Arch/.remmina ~/.config/remmina 
+sudo cp -r /mnt/share/unraid/Backup/Arch/remmina ~/.local/share/remmina 
+echo "Copied Remmina configuration to /remmina"
+# Install Visual Studio Code (from AUR, needs yay or paru)
+if command -v yay &>/dev/null; then
+    yay -S --noconfirm visual-studio-code-bin
+elif command -v paru &>/dev/null; then
+    paru -S --noconfirm visual-studio-code-bin
+else
+    echo "Please install yay or paru to install Visual Studio Code from AUR."
+fi
