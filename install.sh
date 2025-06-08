@@ -53,8 +53,8 @@ sudo mv ~/.local/share/scripts/.zshrc ~/
 echo "Moved .zshrc to home directory."
 
 echo "Sourced .zshrc"
-sudo cp -r /mnt/share/unraid/Backup/Arch/.remmina ~/.config/remmina 
-sudo cp -r /mnt/share/unraid/Backup/Arch/remmina ~/.local/share/remmina 
+sudo cp -r /mnt/share/unraid/Backup/Arch/.remmina/*/ ~/.config/remmina 
+sudo cp -r /mnt/share/unraid/Backup/Arch/remmina/*/ ~/.local/share/remmina 
 echo "Copied Remmina configuration to /remmina"
 sudo mv ~/.local/share/scripts/Keybinds.conf ~/.conf/hypr/configs/Keybinds.conf
 # Install Visual Studio Code (from AUR, needs yay or paru)
