@@ -21,7 +21,7 @@ sudo pacman -S --noconfirm zoxide
 sudo pacman -S --noconfirm fzf
 sudo pacman -S --noconfirm timeahift
 sudo pacman -S --noconfirm tk
-
+sudo pacman -S --noconfirm eza
 # Install timeshift for system snapshots
 # Install cifs-utils for mounting CIFS shares
 
@@ -64,7 +64,7 @@ sudo cp -r /mnt/share/unraid/Backup/Arch/zsh/.zshrc ~/.zshrc
 sudo cp -r /mnt/share/unraid/Backup/Arch/zsh/.oh-my-zsh ~/.oh-my-zsh
 sudo rm -R ~/.local/share/remmina
 sudo rm -R ~/.config/remmina
-
+sudo rm -R ~/.config/hypr/configs/Keybinds.conf
 sudo cp -r /mnt/share/unraid/Backup/Arch/.remmina/*/ ~/.config/remmina 
 sudo cp -r /mnt/share/unraid/Backup/Arch/remmina/*/ ~/.local/share/remmina 
 echo "Copied Remmina configuration to /remmina"
