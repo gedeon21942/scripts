@@ -1,4 +1,5 @@
 #!/bin/bash
 sudo chown -R $(whoami):$(whoami) ~/.local/share/scripts
-chmod -R +x ~/.local/share/scripts
-chmod +x ~/.local/share/scripts/*.sh ~/.local/share/scripts/*.py
+
+# Make all .sh and .py files executable, but skip Keybinds.conf
+find ~/.local/share/scripts -type f \( -name "*.sh" -o -name "*.py" \) ! -name "Keybinds.conf" -exec chmod +x {} \;

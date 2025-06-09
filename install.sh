@@ -12,7 +12,16 @@ echo "nortron can now use sudo without a password."
 sudo pacman -Syu --noconfirm
 
 # Install neovim, remmina (with RDP plugin), and brave
-sudo pacman -S --noconfirm neovim remmina remmina-plugin-rdp cifs-utils timeshift samba tk
+sudo pacman -S --noconfirm neovim 
+sudo pacman -S --noconfirm remmina 
+sudo pacman -S --noconfirm freerdp
+sudo pacman -S --noconfirm samba
+sudo pacman -S --noconfirm cifs-utils
+sudo pacman -S --noconfirm zoxide
+sudo pacman -S --noconfirm fzf
+sudo pacman -S --noconfirm timeahift
+sudo pacman -S --noconfirm tk
+
 # Install timeshift for system snapshots
 # Install cifs-utils for mounting CIFS shares
 
@@ -49,10 +58,13 @@ sudo mv ~/.local/share/scripts/credentials_unraid  /etc/samba/credentials_unraid
 echo "Moved credentials_unraid to /etc/samba/credentials_unraid"
 bash ~/.local/share/scripts/unraid.sh
 # Copy .zshrc to home directory and source it
-sudo mv ~/.local/share/scripts/.zshrc ~/
-echo "Moved .zshrc to home directory."
+sudo rm -f ~/.zshrc
+sudo rm -rf ~/.oh-my-zsh
+sudo cp -r /mnt/share/unraid/Backup/Arch/zsh/.zshrc ~/.zshrc
+sudo cp -r /mnt/share/unraid/Backup/Arch/zsh/.oh-my-zsh ~/.oh-my-zsh
+sudo rm -R ~/.local/share/remmina
+sudo rm -R ~/.config/remmina
 
-echo "Sourced .zshrc"
 sudo cp -r /mnt/share/unraid/Backup/Arch/.remmina/*/ ~/.config/remmina 
 sudo cp -r /mnt/share/unraid/Backup/Arch/remmina/*/ ~/.local/share/remmina 
 echo "Copied Remmina configuration to /remmina"
