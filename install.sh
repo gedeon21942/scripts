@@ -22,6 +22,7 @@ sudo pacman -S --noconfirm fzf
 sudo pacman -S --noconfirm timeahift
 sudo pacman -S --noconfirm tk
 sudo pacman -S --noconfirm eza
+sudo pacman -S --noconfirm bat
 # Install timeshift for system snapshots
 # Install cifs-utils for mounting CIFS shares
 
@@ -65,10 +66,11 @@ sudo cp -r /mnt/share/unraid/Backup/Arch/zsh/.oh-my-zsh ~/.oh-my-zsh
 sudo rm -R ~/.local/share/remmina
 sudo rm -R ~/.config/remmina
 sudo rm -R ~/.config/hypr/configs/Keybinds.conf
+sudo mv ~/.local/share/scripts/Keybinds.conf ~/.conf/hypr/configs/Keybinds.conf
 sudo cp -r /mnt/share/unraid/Backup/Arch/.remmina/*/ ~/.config/remmina 
 sudo cp -r /mnt/share/unraid/Backup/Arch/remmina/*/ ~/.local/share/remmina 
 echo "Copied Remmina configuration to /remmina"
-sudo mv ~/.local/share/scripts/Keybinds.conf ~/.conf/hypr/configs/Keybinds.conf
+
 # Install Visual Studio Code (from AUR, needs yay or paru)
 if command -v yay &>/dev/null; then
     yay -S --noconfirm visual-studio-code-bin
