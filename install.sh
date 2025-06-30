@@ -19,7 +19,7 @@ sudo pacman -S --noconfirm samba
 sudo pacman -S --noconfirm cifs-utils
 sudo pacman -S --noconfirm zoxide
 sudo pacman -S --noconfirm fzf
-sudo pacman -S --noconfirm timeahift
+sudo pacman -S --noconfirm timeshift
 sudo pacman -S --noconfirm tk
 sudo pacman -S --noconfirm eza
 sudo pacman -S --noconfirm bat
