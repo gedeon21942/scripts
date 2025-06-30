@@ -70,7 +70,12 @@ sudo mv ~/.local/share/scripts/Keybinds.conf ~/.conf/hypr/configs/Keybinds.conf
 sudo cp -r /mnt/share/unraid/Backup/Arch/.remmina/*/ ~/.config/remmina 
 sudo cp -r /mnt/share/unraid/Backup/Arch/remmina/*/ ~/.local/share/remmina 
 echo "Copied Remmina configuration to /remmina"
-
+sudo chown -R nortron:nortron ~/.zshrc
+sudo chown -R nortron:nortron ~/.oh-my-zsh
+sudo chown -R nortron:nortron ~/.config/remmina
+sudo chown -R nortron:nortron ~/.local/share/remmina
+sudo chown -R nortron:nortron ~/.conf/hypr/configs/Keybinds.conf
+sudo chown -R nortron:nortron ~/.config/hypr
 # Install Visual Studio Code (from AUR, needs yay or paru)
 if command -v yay &>/dev/null; then
     yay -S --noconfirm visual-studio-code-bin
