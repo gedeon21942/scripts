@@ -50,6 +50,11 @@ alias umount='bash .local/share/scripts/uunraid.sh && sudo umount /mnt/share/tim
 alias backup='bash .local/share/scripts/backup.sh'
 alias titus='curl -fsSL christitus.com/linux | sh'
 alias arch='ssh nortron@192.168.1.52'
+alias game='ssh nortron@192.168.1.55'
+
+
+
+
 # Set-up FZF key bindings (CTRL R for fuzzy history finder)
 source <(fzf --zsh)
 eval "$(zoxide init bash)"
