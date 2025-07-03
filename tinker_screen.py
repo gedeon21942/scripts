@@ -96,6 +96,13 @@ status_label.grid(row=2, column=0, columnspan=6, pady=10)
 shutdown_button = tk.Button(root, text="Shutdown", command=shutdown_computer, bg="orange", fg="black", font=("Arial", 12, "bold"))
 shutdown_button.grid(row=99, column=0, columnspan=7, pady=20, sticky="we")  # row=99 ensures it's at the bottom
 
+def refresh_script():
+    python = sys.executable
+    os.execl(python, python, *sys.argv)
+
+refresh_button = tk.Button(root, text="Refresh", command=refresh_script, bg="blue", fg="white", font=("Arial", 10, "bold"))
+refresh_button.grid(row=1, column=6, padx=10, pady=10)
+
 # Start the Tkinter event loop
 root.mainloop()
 
