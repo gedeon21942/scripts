@@ -1,0 +1,1 @@
+remmina -c ~/.local/share/remmina/group_vnc_tarch_192-168-1-63.remmina
