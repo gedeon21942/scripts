@@ -77,9 +77,6 @@ button7.grid(row=0, column=6, padx=10, pady=10)
 button8 = tk.Button(root, text="RDHyper", command=lambda: run_script("/home/nortron/.local/share/scripts/rdhypr.sh"))
 button8.grid(row=0, column=7, padx=10, pady=10)
 
-button9 = tk.Button(root, text="tarch", command=lambda: run_script("/home/nortron/.local/share/scripts/tarch.sh"))
-button9.grid(row=0, column=8, padx=10, pady=10)
-
 # Add a close button in the upper-right corner
 close_button = tk.Button(root, text="X", command=root.destroy, bg="red", fg="white", font=("Arial", 10, "bold"))
 close_button.place(relx=1.0, rely=0.0, anchor="ne", width=30, height=30)
