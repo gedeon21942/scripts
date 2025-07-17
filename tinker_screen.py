@@ -103,6 +103,34 @@ def refresh_script():
 refresh_button = tk.Button(root, text="Refresh", command=refresh_script, bg="blue", fg="white", font=("Arial", 10, "bold"))
 refresh_button.grid(row=1, column=6, padx=10, pady=10)
 
+def open_new_window():
+    # Get the main window's position and size
+    root.update_idletasks()
+    x = root.winfo_x()
+    y = root.winfo_y()
+    width = root.winfo_width()
+    height = root.winfo_height()
+
+    new_win = tk.Toplevel(root)
+    new_win.title("New Tkinter Window")
+    new_win.geometry(f"{500}x{300}+{x}+{y}")
+    new_win.configure(bg="black")  # Set the background color to black
+    label = tk.Label(new_win, text="This is another Tkinter window!", font=("Arial", 12))
+    
+    label.pack(pady=20)
+
+    # Add a button under the label to run a script
+    run_btn = tk.Button(
+        new_win,
+        text="Suspend Desk",
+        command=lambda: run_script("/home/nortron/.local/share/scripts/suspend_desk.sh")
+    )
+    run_btn.pack(pady=10)
+
+# Add this button to the top row (for example, after the last button)
+open_window_button = tk.Button(root, text="Open Window", command=open_new_window)
+open_window_button.grid(row=0, column=10, padx=10, pady=10)
+
 # Start the Tkinter event loop
 root.mainloop()
 
