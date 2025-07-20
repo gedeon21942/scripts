@@ -1,0 +1,1 @@
+sudo mount -t cifs //192.168.1.19/home /mnt/share/plex -o credentials=/etc/samba/credentials_plex,vers=3.0
