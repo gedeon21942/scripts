@@ -35,10 +35,10 @@ alias ll='eza -al --icons'
 alias lt='eza -a --tree --level=1 --icons'
 alias installs='sudo pacman -S --noconfirm'
 alias update='sudo pacman -Syu --noconfirm'
-alias zshrc='sudo vim .zshrc && source .zshrc'
+alias zshrc='sudo nvim .zshrc && source .zshrc'
 alias magic=' ssh nortron@192.168.1.46'
 alias unraid='ssh root@192.168.1.12'
-alias key='sudo vim .config/hypr/configs/Keybinds.conf'
+alias key='sudo nvim .config/hypr/configs/Keybinds.conf'
 alias shutdown='sudo shutdown now'
 alias exe='sudo chmod +x'
 alias stop='bash .local/share/scripts/stopwork.sh'
@@ -51,7 +51,7 @@ alias backup='bash .local/share/scripts/backup.sh'
 alias titus='curl -fsSL christitus.com/linux | sh'
 alias arch='ssh nortron@192.168.1.52'
 alias game='ssh nortron@192.168.1.55'
-
+alias plex='ssh nortron@192.168.1.19'
 
 
 
