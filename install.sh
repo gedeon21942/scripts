@@ -23,6 +23,7 @@ sudo pacman -S --noconfirm timeshift
 sudo pacman -S --noconfirm tk
 sudo pacman -S --noconfirm eza
 sudo pacman -S --noconfirm bat
+sudo pacman -S --noconfirm wayvnc
 # Install timeshift for system snapshots
 # Install cifs-utils for mounting CIFS shares
 
