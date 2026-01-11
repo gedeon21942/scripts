@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Configuration
-USERNAME="root" # Unraid's SSH user is typically 'root'
+USERNAME="nortron" # Unraid's SSH user is typically 'root'
 HOSTNAME="192.168.1.121"
 VM_NAME="work11" # Replace with the exact name of your VM
 
