@@ -1,0 +1,38 @@
+# Example package list for an Arch server
+# One package name per line. Edit as needed.
+
+# Base & tooling
+base
+base-devel
+linux
+linux-firmware
+
+# SSH & remote access
+openssh
+
+# Networking
+networkmanager
+
+# Utilities
+vim
+neovim
+htop
+tmux
+rsync
+curl
+wget
+jq
+
+# Server software
+nginx
+postgresql
+redis
+
+# Container/runtime
+docker
+
+# Optional: enable these if you want a desktop environment or X support
+# xorg-server
+# xf86-video-vesa
+
+# Note: AUR packages are not included here; use an AUR helper separately if needed.

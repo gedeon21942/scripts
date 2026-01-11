@@ -1,0 +1,29 @@
+git
+
+# Example package list for Arch Linux (pacman)
+# One package name per line. Edit as needed.
+
+# Base & tooling
+base-devel
+git
+curl
+wget
+vim
+jq
+
+# Utilities
+htop
+neofetch
+tmux
+rsync
+
+# Networking / misc
+networkmanager
+openssh
+
+# Optional GUI / helpers
+polkit
+gvfs
+xdg-utils
+
+# Note: AUR packages require an AUR helper (yay/paru) and are not listed here.
