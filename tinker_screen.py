@@ -131,6 +131,10 @@ def open_new_window():
 open_window_button = tk.Button(root, text="Open Window", command=open_new_window)
 open_window_button.grid(row=0, column=10, padx=10, pady=10)
 
+# Add a button next to 'Open Window' to run work11.sh
+work11_button = tk.Button(root, text="Work11", command=lambda: run_script("/home/nortron/.local/share/scripts/work11.sh"))
+work11_button.grid(row=0, column=11, padx=10, pady=10)
+
 # Start the Tkinter event loop
 root.mainloop()
 
