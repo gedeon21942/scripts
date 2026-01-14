@@ -265,6 +265,10 @@ install_bootloader() {
   # Install GRUB and efibootmgr
   run_as_sudo arch-chroot /mnt pacman -S --noconfirm grub efibootmgr
 
+  # Debug: Show available devices inside chroot
+  echo -e "${CYAN}Available devices inside chroot:${NC}"
+  run_as_sudo arch-chroot /mnt bash -c 'lsblk | head -10'
+
   # Detect if we're in EFI or legacy BIOS mode
   if [ -d "/sys/firmware/efi" ]; then
     echo -e "${CYAN}Detected EFI boot mode${NC}"
@@ -274,25 +278,42 @@ install_bootloader() {
       echo -e "${GREEN}✅ GRUB installed in EFI mode${NC}"
     else
       echo -e "${YELLOW}⚠️  EFI installation failed, trying legacy BIOS mode...${NC}"
-      # Fallback to legacy BIOS installation
-      if run_as_sudo arch-chroot /mnt grub-install --target=i386-pc "$TARGET_DISK" 2>/dev/null; then
+      # Fallback to legacy BIOS installation - pass TARGET_DISK via environment
+      if TARGET_DISK="$TARGET_DISK" run_as_sudo arch-chroot /mnt bash -c 'echo "Installing GRUB to $TARGET_DISK" && grub-install --target=i386-pc "$TARGET_DISK"' 2>/dev/null; then
         echo -e "${GREEN}✅ GRUB installed in legacy BIOS mode${NC}"
       else
         echo -e "${RED}❌ GRUB installation failed in both EFI and BIOS modes${NC}"
         echo -e "${YELLOW}You may need to install and configure GRUB manually after booting${NC}"
+        echo -e "${YELLOW}Target disk was: $TARGET_DISK${NC}"
         return 1
       fi
     fi
   else
     echo -e "${CYAN}Detected legacy BIOS boot mode${NC}"
 
-    # Install GRUB for legacy BIOS
-    if run_as_sudo arch-chroot /mnt grub-install --target=i386-pc "$TARGET_DISK" 2>/dev/null; then
+    # Install GRUB for legacy BIOS - try multiple approaches
+    echo -e "${YELLOW}Attempting GRUB installation...${NC}"
+
+    # Method 1: Direct installation with device passed via environment
+    if TARGET_DISK="$TARGET_DISK" run_as_sudo arch-chroot /mnt bash -c 'echo "Installing GRUB to $TARGET_DISK" && grub-install --target=i386-pc "$TARGET_DISK" --force' 2>/dev/null; then
       echo -e "${GREEN}✅ GRUB installed in legacy BIOS mode${NC}"
     else
-      echo -e "${RED}❌ GRUB installation failed${NC}"
-      echo -e "${YELLOW}You may need to install and configure GRUB manually after booting${NC}"
-      return 1
+      echo -e "${YELLOW}⚠️  Direct installation failed, trying alternative method...${NC}"
+
+      # Method 2: Try without quotes and with --recheck
+      if TARGET_DISK="$TARGET_DISK" run_as_sudo arch-chroot /mnt bash -c 'echo "Trying alternative GRUB install to $TARGET_DISK" && grub-install --target=i386-pc --recheck "$TARGET_DISK"' 2>/dev/null; then
+        echo -e "${GREEN}✅ GRUB installed with alternative method${NC}"
+      else
+        echo -e "${RED}❌ GRUB installation failed${NC}"
+        echo -e "${YELLOW}You may need to install and configure GRUB manually after booting${NC}"
+        echo -e "${YELLOW}Target disk was: $TARGET_DISK${NC}"
+        echo -e "${YELLOW}Manual commands to try after booting:${NC}"
+        echo -e "${WHITE}  mount $ROOT_PART /mnt${NC}"
+        echo -e "${WHITE}  arch-chroot /mnt${NC}"
+        echo -e "${WHITE}  grub-install --target=i386-pc $TARGET_DISK${NC}"
+        echo -e "${WHITE}  grub-mkconfig -o /boot/grub/grub.cfg${NC}"
+        return 1
+      fi
     fi
   fi
 
