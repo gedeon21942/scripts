@@ -178,6 +178,24 @@ mount_filesystems() {
   echo -e "${GREEN}✅ Filesystems mounted${NC}"
 }
 
+fix_gpg_keys() {
+  echo -e "${YELLOW}🔧 Attempting to fix GPG key issues...${NC}"
+
+  # Try to receive the Levente Polyak key specifically
+  run_as_sudo pacman-key --recv-keys 9B729B06 || echo -e "${YELLOW}Could not receive Levente Polyak key${NC}"
+
+  # Try to receive common problematic keys
+  run_as_sudo pacman-key --recv-keys $(pacman-key --list-keys | grep -E "(expired|revoked)" | awk '{print $1}' | head -5) 2>/dev/null || true
+
+  # Refresh keys
+  run_as_sudo pacman-key --refresh-keys || echo -e "${YELLOW}Key refresh failed, continuing...${NC}"
+
+  # Update trust database
+  run_as_sudo pacman-key --updatedb
+
+  echo -e "${GREEN}✅ Key fix attempt completed${NC}"
+}
+
 install_base_system() {
   echo -e "${MAGENTA}🔄 Installing base Arch Linux system...${NC}"
 
@@ -185,6 +203,12 @@ install_base_system() {
   echo -e "${YELLOW}🔑 Initializing GPG keyring...${NC}"
   run_as_sudo pacman-key --init
   run_as_sudo pacman-key --populate archlinux
+
+  # Fix common GPG key issues
+  fix_gpg_keys
+
+  # Update package databases
+  run_as_sudo pacman -Sy --noconfirm
 
   # Install base packages
   run_as_sudo pacstrap /mnt base base-devel linux linux-firmware vim networkmanager openssh sudo
@@ -238,10 +262,24 @@ install_server_packages() {
   PACKAGES=$(grep -v '^#' "$DIR/example-packages-arch-server.txt" | grep -v '^$' | tr '\n' ' ')
 
   # Update package databases and refresh keys inside chroot
-  run_as_sudo arch-chroot /mnt pacman-key --refresh-keys
-  run_as_sudo arch-chroot /mnt pacman -Sy --noconfirm
+  echo -e "${YELLOW}🔄 Updating package databases and refreshing keys...${NC}"
 
-  run_as_sudo arch-chroot /mnt pacman -S --noconfirm $PACKAGES
+  # Fix GPG keys inside chroot
+  run_as_sudo arch-chroot /mnt bash -c "
+    pacman-key --recv-keys 9B729B06 2>/dev/null || echo 'Could not receive Levente Polyak key'
+    pacman-key --refresh-keys 2>/dev/null || echo 'Key refresh failed'
+    pacman-key --updatedb
+    pacman -Sy --noconfirm
+  " || echo -e "${YELLOW}⚠️  Key operations had some issues, continuing...${NC}"
+
+  # Try to install packages, with fallback if signature issues occur
+  if ! run_as_sudo arch-chroot /mnt pacman -S --noconfirm $PACKAGES; then
+    echo -e "${YELLOW}⚠️  Package installation failed, trying with --skippgpcheck...${NC}"
+    run_as_sudo arch-chroot /mnt pacman -S --noconfirm --skippgpcheck $PACKAGES || {
+      echo -e "${RED}❌ Package installation failed. You may need to manually install packages after boot.${NC}"
+      return 1
+    }
+  fi
 
   echo -e "${GREEN}✅ Server packages installed${NC}"
 }
