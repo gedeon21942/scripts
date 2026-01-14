@@ -181,6 +181,11 @@ mount_filesystems() {
 install_base_system() {
   echo -e "${MAGENTA}🔄 Installing base Arch Linux system...${NC}"
 
+  # Initialize and populate the keyring
+  echo -e "${YELLOW}🔑 Initializing GPG keyring...${NC}"
+  run_as_sudo pacman-key --init
+  run_as_sudo pacman-key --populate archlinux
+
   # Install base packages
   run_as_sudo pacstrap /mnt base base-devel linux linux-firmware vim networkmanager openssh sudo
 
@@ -231,6 +236,10 @@ install_server_packages() {
 
   # Read packages from the arch server package list
   PACKAGES=$(grep -v '^#' "$DIR/example-packages-arch-server.txt" | grep -v '^$' | tr '\n' ' ')
+
+  # Update package databases and refresh keys inside chroot
+  run_as_sudo arch-chroot /mnt pacman-key --refresh-keys
+  run_as_sudo arch-chroot /mnt pacman -Sy --noconfirm
 
   run_as_sudo arch-chroot /mnt pacman -S --noconfirm $PACKAGES
 
