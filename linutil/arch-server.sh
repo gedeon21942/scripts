@@ -253,12 +253,53 @@ configure_system() {
   # Configure sudo
   echo "%wheel ALL=(ALL) ALL" | run_as_sudo tee /mnt/etc/sudoers.d/wheel
 
-  # Install bootloader
-  run_as_sudo arch-chroot /mnt pacman -S --noconfirm grub efibootmgr
-  run_as_sudo arch-chroot /mnt grub-install --target=x86_64-efi --efi-directory=/boot --bootloader-id=GRUB
-  run_as_sudo arch-chroot /mnt grub-mkconfig -o /boot/grub/grub.cfg
+  # Install and configure bootloader
+  install_bootloader
 
   echo -e "${GREEN}✅ System configuration complete${NC}"
+}
+
+install_bootloader() {
+  echo -e "${YELLOW}🔄 Installing bootloader...${NC}"
+
+  # Install GRUB and efibootmgr
+  run_as_sudo arch-chroot /mnt pacman -S --noconfirm grub efibootmgr
+
+  # Detect if we're in EFI or legacy BIOS mode
+  if [ -d "/sys/firmware/efi" ]; then
+    echo -e "${CYAN}Detected EFI boot mode${NC}"
+
+    # Try EFI installation first
+    if run_as_sudo arch-chroot /mnt grub-install --target=x86_64-efi --efi-directory=/boot --bootloader-id=GRUB 2>/dev/null; then
+      echo -e "${GREEN}✅ GRUB installed in EFI mode${NC}"
+    else
+      echo -e "${YELLOW}⚠️  EFI installation failed, trying legacy BIOS mode...${NC}"
+      # Fallback to legacy BIOS installation
+      if run_as_sudo arch-chroot /mnt grub-install --target=i386-pc "$TARGET_DISK" 2>/dev/null; then
+        echo -e "${GREEN}✅ GRUB installed in legacy BIOS mode${NC}"
+      else
+        echo -e "${RED}❌ GRUB installation failed in both EFI and BIOS modes${NC}"
+        echo -e "${YELLOW}You may need to install and configure GRUB manually after booting${NC}"
+        return 1
+      fi
+    fi
+  else
+    echo -e "${CYAN}Detected legacy BIOS boot mode${NC}"
+
+    # Install GRUB for legacy BIOS
+    if run_as_sudo arch-chroot /mnt grub-install --target=i386-pc "$TARGET_DISK" 2>/dev/null; then
+      echo -e "${GREEN}✅ GRUB installed in legacy BIOS mode${NC}"
+    else
+      echo -e "${RED}❌ GRUB installation failed${NC}"
+      echo -e "${YELLOW}You may need to install and configure GRUB manually after booting${NC}"
+      return 1
+    fi
+  fi
+
+  # Generate GRUB configuration
+  run_as_sudo arch-chroot /mnt grub-mkconfig -o /boot/grub/grub.cfg
+
+  echo -e "${GREEN}✅ Bootloader configuration complete${NC}"
 }
 
 install_server_packages() {
