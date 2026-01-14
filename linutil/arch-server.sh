@@ -21,7 +21,7 @@ TARGET_DISK=""
 HOSTNAME=""
 USERNAME=""
 PASSWORD=""
-TIMEZONE="UTC"
+TIMEZONE="America/Detroit"
 LOCALE="en_US.UTF-8"
 
 show_installer_banner() {
@@ -123,12 +123,8 @@ get_password() {
 }
 
 get_timezone() {
-  echo -e "${CYAN}🌍 Timezone Selection${NC}"
-  echo -e "${WHITE}Available timezones:${NC}"
-  timedatectl list-timezones | head -20
-  echo -e "${YELLOW}(Press Enter for UTC, or enter a specific timezone)${NC}"
-  read -r -p "Timezone [UTC]: " TIMEZONE_INPUT
-  TIMEZONE="${TIMEZONE_INPUT:-UTC}"
+  echo -e "${CYAN}🌍 Setting timezone to America/Detroit${NC}"
+  TIMEZONE="America/Detroit"
 
   if ! timedatectl list-timezones | grep -q "^$TIMEZONE$"; then
     echo -e "${RED}❌ Invalid timezone, using UTC${NC}"
@@ -277,7 +273,7 @@ main() {
   echo -e "${WHITE}Target Disk: $TARGET_DISK${NC}"
   echo -e "${WHITE}Hostname: $HOSTNAME${NC}"
   echo -e "${WHITE}Username: $USERNAME${NC}"
-  echo -e "${WHITE}Timezone: $TIMEZONE${NC}"
+  echo -e "${WHITE}Timezone: America/Detroit${NC}"
   echo -e "${BLUE}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
 
   if ! confirm "$(echo -e "${RED}Final confirmation: This will WIPE $TARGET_DISK. Continue?${NC}")"; then
