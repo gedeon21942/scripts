@@ -60,23 +60,23 @@ sudo mv ~/.local/share/scripts/credentials_unraid  /etc/samba/credentials_unraid
 echo "Moved credentials_unraid to /etc/samba/credentials_unraid"
 bash ~/.local/share/scripts/unraid.sh
 # Copy .zshrc to home directory and source it
-sudo rm -f ~/.zshrc
-sudo rm -rf ~/.oh-my-zsh
-sudo cp -r /mnt/share/unraid/Backup/Arch/zsh/.zshrc ~/.zshrc
-sudo cp -r /mnt/share/unraid/Backup/Arch/zsh/.oh-my-zsh ~/.oh-my-zsh
+#sudo rm -f ~/.zshrc
+#sudo rm -rf ~/.oh-my-zsh
+#sudo cp -r /mnt/share/unraid/Backup/Arch/zsh/.zshrc ~/.zshrc
+#sudo cp -r /mnt/share/unraid/Backup/Arch/zsh/.oh-my-zsh ~/.oh-my-zsh
 sudo rm -R ~/.local/share/remmina
 sudo rm -R ~/.config/remmina
-sudo rm -R ~/.config/hypr/configs/Keybinds.conf
-sudo mv ~/.local/share/scripts/Keybinds.conf ~/.conf/hypr/configs/Keybinds.conf
+#sudo rm -R ~/.config/hypr/configs/Keybinds.conf
+#sudo mv ~/.local/share/scripts/Keybinds.conf ~/.conf/hypr/configs/Keybinds.conf
 sudo cp -r /mnt/share/unraid/Backup/Arch/.remmina/*/ ~/.config/remmina 
 sudo cp -r /mnt/share/unraid/Backup/Arch/remmina/*/ ~/.local/share/remmina 
 echo "Copied Remmina configuration to /remmina"
-sudo chown -R nortron:nortron ~/.zshrc
-sudo chown -R nortron:nortron ~/.oh-my-zsh
+#sudo chown -R nortron:nortron ~/.zshrc
+#sudo chown -R nortron:nortron ~/.oh-my-zsh
 sudo chown -R nortron:nortron ~/.config/remmina
 sudo chown -R nortron:nortron ~/.local/share/remmina
-sudo chown -R nortron:nortron ~/.conf/hypr/configs/Keybinds.conf
-sudo chown -R nortron:nortron ~/.config/hypr
+#sudo chown -R nortron:nortron ~/.conf/hypr/configs/Keybinds.conf
+#sudo chown -R nortron:nortron ~/.config/hypr
 # Install Visual Studio Code (from AUR, needs yay or paru)
 if command -v yay &>/dev/null; then
     yay -S --noconfirm visual-studio-code-bin
