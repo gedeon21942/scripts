@@ -71,6 +71,9 @@ sudo rm -R ~/.config/remmina
 sudo cp -r /mnt/share/unraid/Backup/Arch/.remmina/*/ ~/.config/remmina 
 sudo cp -r /mnt/share/unraid/Backup/Arch/remmina/*/ ~/.local/share/remmina 
 echo "Copied Remmina configuration to /remmina"
+# Copy aliases.zsh
+sudo cp /mnt/share/unraid/Backup/Arch/zsh/aliases.zsh ~/.aliases.zsh
+sudo chown nortron:nortron ~/.aliases.zsh
 #sudo chown -R nortron:nortron ~/.zshrc
 #sudo chown -R nortron:nortron ~/.oh-my-zsh
 sudo chown -R nortron:nortron ~/.config/remmina
