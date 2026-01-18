@@ -74,6 +74,10 @@ echo "Copied Remmina configuration to /remmina"
 # Copy aliases.zsh
 sudo cp /mnt/share/unraid/Backup/Arch/zsh/aliases.zsh ~/.aliases.zsh
 sudo chown nortron:nortron ~/.aliases.zsh
+# Ensure aliases.zsh is sourced in .zshrc
+if ! grep -q "source ~/.aliases.zsh" ~/.zshrc; then
+    echo "source ~/.aliases.zsh" >> ~/.zshrc
+fi
 #sudo chown -R nortron:nortron ~/.zshrc
 #sudo chown -R nortron:nortron ~/.oh-my-zsh
 sudo chown -R nortron:nortron ~/.config/remmina
