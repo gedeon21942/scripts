@@ -23,6 +23,7 @@ sudo pacman -S --noconfirm timeshift
 sudo pacman -S --noconfirm tk
 sudo pacman -S --noconfirm eza
 sudo pacman -S --noconfirm bat
+sudo pacman -S --noconfirm git
 sudo pacman -S --noconfirm zsh
 sudo pacman -S --noconfirm wayvnc
 # Install timeshift for system snapshots
@@ -39,6 +40,15 @@ echo "OpenSSH server installed, enabled, and started."
 
 # Install Oh My Zsh
 sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
+
+# Install zsh-autosuggestions plugin
+git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
+
+# Install zsh-syntax-highlighting plugin
+git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
+
+# Add zsh-autosuggestions and zsh-syntax-highlighting to plugins in .zshrc
+sed -i 's/plugins=(git)/plugins=(git zsh-autosuggestions zsh-syntax-highlighting)/' ~/.zshrc
 
 # Set zsh as the default shell
 chsh -s /bin/zsh
