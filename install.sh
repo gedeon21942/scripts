@@ -36,6 +36,12 @@ sudo systemctl start sshd
 
 echo "OpenSSH server installed, enabled, and started."
 
+# Install Oh My Zsh
+sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
+
+# Set zsh as the default shell
+chsh -s /bin/zsh
+
 # Install Brave browser (from AUR, needs yay or paru)
 if command -v yay &>/dev/null; then
     yay -S --noconfirm brave-bin
