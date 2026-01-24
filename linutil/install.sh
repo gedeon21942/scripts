@@ -4,6 +4,37 @@
 set -euo pipefail
 
 DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+
+# --- Bootstrap Logic for "curl | bash" usage ---
+if [ ! -f "$DIR/utils.sh" ]; then
+  echo "Dependencies not found. Bootstrapping from repository..."
+  
+  # TODO: Update this URL to your actual repository
+  REPO_URL="https://github.com/gedeon21942/scripts/linutil"
+  INSTALL_DIR="${HOME}/.local/share/linutil"
+
+  # Ensure git is installed
+  if ! command -v git &>/dev/null; then
+    echo "Installing git..."
+    if command -v pacman &>/dev/null; then sudo pacman -S --noconfirm git
+    elif command -v apt &>/dev/null; then sudo apt update && sudo apt install -y git
+    elif command -v dnf &>/dev/null; then sudo dnf install -y git
+    else echo "Error: git is required. Please install it."; exit 1; fi
+  fi
+
+  # Clone or update repository
+  if [ -d "$INSTALL_DIR" ]; then
+    echo "Updating $INSTALL_DIR..."
+    git -C "$INSTALL_DIR" pull || (rm -rf "$INSTALL_DIR" && git clone "$REPO_URL" "$INSTALL_DIR")
+  else
+    git clone "$REPO_URL" "$INSTALL_DIR"
+  fi
+
+  # Execute the downloaded script
+  exec bash "$INSTALL_DIR/install.sh" "$@"
+fi
+# -----------------------------------------------
+
 . "$DIR/utils.sh"
 
 # Color definitions
@@ -153,8 +184,8 @@ main() {
       2) arch_menu ;;
       3) apply_tweaks ;;
       4) open_package_list ;;
-      5) log "Exiting."; exit 0 ;;
-      6) install_example_packages ;;
+      5) install_example_packages ;;
+      6) log "Exiting."; exit 0 ;;
       *) echo -e "${RED}Invalid choice. Please try again.${NC}" ;;
     esac
   done
