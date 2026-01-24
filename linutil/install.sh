@@ -86,13 +86,15 @@ arch_menu() {
     echo -e "${BLUE}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
     echo -e "${WHITE}1)${NC} Arch server setup"
     echo -e "${WHITE}2)${NC} Install yay (AUR helper)"
-    echo -e "${WHITE}3)${NC} Back to main menu"
+    echo -e "${WHITE}3)${NC} Setup Samba credentials"
+    echo -e "${WHITE}4)${NC} Back to main menu"
     echo -e "${BLUE}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
-    read -r -p "$(echo -e "${YELLOW}Select an option (1-3): ${NC}")" aopt
+    read -r -p "$(echo -e "${YELLOW}Select an option (1-4): ${NC}")" aopt
     case "$aopt" in
       1) arch_server ;; 
       2) install_yay ;;
-      3) return 0 ;;
+      3) setup_samba_creds ;;
+      4) return 0 ;;
       *) echo -e "${RED}Invalid choice. Please try again.${NC}" ;;
     esac
   done
@@ -119,6 +121,34 @@ install_yay() {
   rm -rf "$tmp_dir"
   
   echo -e "${GREEN}✅ yay installed successfully!${NC}"
+}
+
+setup_samba_creds() {
+  echo -e "${CYAN}🔐 Samba Credentials Setup${NC}"
+  
+  read -r -p "$(echo -e "${YELLOW}Enter filename for credentials (e.g., credentials_unraid): ${NC}")" cred_name
+  if [ -z "$cred_name" ]; then
+    err "Filename cannot be empty."
+    return 1
+  fi
+
+  read -r -p "$(echo -e "${YELLOW}Enter Samba username: ${NC}")" smb_user
+  read -r -s -p "$(echo -e "${YELLOW}Enter Samba password: ${NC}")" smb_pass
+  echo ""
+
+  local target="$HOME/.local/share/scripts/$cred_name"
+  echo -e "${MAGENTA}Creating $target...${NC}"
+  
+  local tmp_file
+  tmp_file=$(mktemp)
+  echo "username=$smb_user" > "$tmp_file"
+  echo "password=$smb_pass" >> "$tmp_file"
+
+  mkdir -p "$(dirname "$target")"
+  mv "$tmp_file" "$target"
+  chmod 600 "$target"
+  
+  echo -e "${GREEN}✅ Credentials saved to $target${NC}"
 }
 
 arch_server() {
