@@ -85,15 +85,40 @@ arch_menu() {
     echo -e "${GREEN}Arch Linux Tasks:${NC}"
     echo -e "${BLUE}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
     echo -e "${WHITE}1)${NC} Arch server setup"
-    echo -e "${WHITE}2)${NC} Back to main menu"
+    echo -e "${WHITE}2)${NC} Install yay (AUR helper)"
+    echo -e "${WHITE}3)${NC} Back to main menu"
     echo -e "${BLUE}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
-    read -r -p "$(echo -e "${YELLOW}Select an option (1-2): ${NC}")" aopt
+    read -r -p "$(echo -e "${YELLOW}Select an option (1-3): ${NC}")" aopt
     case "$aopt" in
       1) arch_server ;; 
-      2) return 0 ;;
+      2) install_yay ;;
+      3) return 0 ;;
       *) echo -e "${RED}Invalid choice. Please try again.${NC}" ;;
     esac
   done
+}
+
+install_yay() {
+  if command -v yay &>/dev/null; then
+    log "yay is already installed."
+    return
+  fi
+
+  if [ "$EUID" -eq 0 ]; then
+    err "Please run as a normal user to install yay (makepkg restriction)."
+    return
+  fi
+
+  echo -e "${MAGENTA}📦 Installing yay (AUR helper)...${NC}"
+  run_as_sudo pacman -S --needed --noconfirm git base-devel
+
+  local tmp_dir
+  tmp_dir=$(mktemp -d)
+  git clone https://aur.archlinux.org/yay.git "$tmp_dir"
+  (cd "$tmp_dir" && makepkg -si --noconfirm)
+  rm -rf "$tmp_dir"
+  
+  echo -e "${GREEN}✅ yay installed successfully!${NC}"
 }
 
 arch_server() {
