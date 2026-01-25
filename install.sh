@@ -26,6 +26,7 @@ sudo pacman -S --noconfirm bat
 sudo pacman -S --noconfirm git
 sudo pacman -S --noconfirm zsh
 sudo pacman -S --noconfirm wayvnc
+sudo pacman -S --noconfirm fastfetch
 # Install timeshift for system snapshots
 # Install cifs-utils for mounting CIFS shares
 
