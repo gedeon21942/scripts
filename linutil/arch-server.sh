@@ -250,6 +250,11 @@ configure_system() {
   run_as_sudo arch-chroot /mnt useradd -m -G wheel -s /bin/bash "$USERNAME"
   echo "$USERNAME:$PASSWORD" | run_as_sudo arch-chroot /mnt chpasswd
 
+  # Create standard directories
+  run_as_sudo arch-chroot /mnt mkdir -p "/home/$USERNAME/.local/share"
+  run_as_sudo arch-chroot /mnt mkdir -p "/home/$USERNAME/.config"
+  run_as_sudo arch-chroot /mnt chown -R "$USERNAME:$USERNAME" "/home/$USERNAME/.local" "/home/$USERNAME/.config"
+
   # Configure sudo
   echo "%wheel ALL=(ALL) ALL" | run_as_sudo tee /mnt/etc/sudoers.d/wheel
 
