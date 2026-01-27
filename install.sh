@@ -99,7 +99,7 @@ echo "Copied Remmina configuration to /remmina"
 sudo cp /mnt/share/unraid/Backup/Arch/server/.oh-my-zsh ~/.oh-my-zsh
 sudo cp /mnt/share/unraid/Backup/Arch/server/.zshrc ~/.zshrc
 sudo cp /mnt/share/unraid/Backup/Arch/server/.aliases.zsh ~/.aliases.zsh
-udo cp /mnt/share/unraid/Backup/Arch/server/fastfetch ~/.config
+sudo cp /mnt/share/unraid/Backup/Arch/server/fastfetch ~/.config
 sudo chown nortron:nortron ~/.aliases.zsh
 # Ensure aliases.zsh is sourced in .zshrc
 if ! grep -q "source ~/.aliases.zsh" ~/.zshrc; then
