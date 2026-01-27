@@ -48,6 +48,12 @@ git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-m
 # Install zsh-syntax-highlighting plugin
 git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
 
+# Install agnosterzak theme
+curl -L https://raw.githubusercontent.com/zakaziko99/agnosterzak-ohmyzsh-theme/master/agnosterzak.zsh-theme -o ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/themes/agnosterzak.zsh-theme
+
+# Set ZSH_THEME to agnosterzak
+sed -i 's/^ZSH_THEME=".*"/ZSH_THEME="agnosterzak"/' ~/.zshrc
+
 # Add zsh-autosuggestions and zsh-syntax-highlighting to plugins in .zshrc
 sed -i 's/plugins=(git)/plugins=(git zsh-autosuggestions zsh-syntax-highlighting)/' ~/.zshrc
 
