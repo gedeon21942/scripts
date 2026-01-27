@@ -138,17 +138,30 @@ setup_samba_creds() {
   read -r -s -p "$(echo -e "${YELLOW}Enter Samba password: ${NC}")" smb_pass
   echo ""
 
-  local target="$HOME/.local/share/scripts/$cred_name"
+  # Handle running as sudo to ensure file goes to real user's home
+  local real_user="${SUDO_USER:-$USER}"
+  local real_home
+  if [ -n "${SUDO_USER:-}" ]; then
+    real_home=$(getent passwd "$SUDO_USER" | cut -d: -f6)
+    [ -z "$real_home" ] && real_home="$HOME"
+  else
+    real_home="$HOME"
+  fi
+
+  local target="$real_home/.local/share/scripts/$cred_name"
   echo -e "${MAGENTA}Creating $target...${NC}"
   
   local tmp_file
   tmp_file=$(mktemp)
-  echo "username=$smb_user" > "$tmp_file"
-  echo "password=$smb_pass" >> "$tmp_file"
+  printf "username=%s\npassword=%s\n" "$smb_user" "$smb_pass" > "$tmp_file"
 
   mkdir -p "$(dirname "$target")"
   mv "$tmp_file" "$target"
   chmod 600 "$target"
+  
+  if [ -n "${SUDO_USER:-}" ]; then
+    chown "$real_user:$(id -gn "$real_user")" "$target"
+  fi
   
   echo -e "${GREEN}✅ Credentials saved to $target${NC}"
 }
