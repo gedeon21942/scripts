@@ -1,7 +1,7 @@
 #!/bin/bash
 
-# Check if the machine is already online
-if ping -c 1 -W 1 192.168.1.80 >/dev/null 2>&1; then
+# Check if the machine is already online (checking RDP port 3389)
+if timeout 1 bash -c 'echo > /dev/tcp/192.168.1.80/3389' >/dev/null 2>&1; then
     echo "Machine is already online, skipping sleep."
 else
     # Send Wake-on-LAN packet
