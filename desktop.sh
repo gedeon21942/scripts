@@ -9,7 +9,7 @@ if ping -c 1 -W 1 192.168.1.80 >/dev/null 2>&1; then
     echo "Machine is already online, skipping sleep."
 else
     echo "Waiting for the machine to wake up..."
-    sleep 15
+    sleep 25
 fi
 
 # Launch Remmina to RDP into the machine
