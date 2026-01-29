@@ -2,7 +2,7 @@
 
 # Configuration
 USERNAME="nortron" # Unraid's SSH user is typically 'root'
-HOSTNAME="192.168.1.121"
+HOSTNAME="192.168.1.140"
 VM_NAME="work11" # Replace with the exact name of your VM
 
 # --- Option 1: Start a VM ---
