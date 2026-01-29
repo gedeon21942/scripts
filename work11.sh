@@ -24,7 +24,7 @@ echo -e "\nChecking VM status..."
 ssh "$USERNAME@$HOSTNAME" "virsh list --all | grep -i \"$VM_NAME\""
 
 # Check if the machine is already online
-if ping -c 1 -W 1 192.168.1.60 >/dev/null 2>&1; then
+if ping -c 1 -W 1 192.168.1.159 >/dev/null 2>&1; then
     echo "Machine is already online, skipping sleep."
 else
     echo "Waiting for the machine to wake up..."
@@ -32,7 +32,7 @@ else
 fi
 
 echo -e "\nScript execution complete."
-remmina -c ~/.local/share/remmina/group_rdp_work_192-168-1-60.remmina
+remmina -c ~/.local/share/remmina/group_rdp_work_192-168-1-159.remmina
 
 
 
