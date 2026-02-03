@@ -140,6 +140,9 @@ def open_new_window():
     mount_unraid_btn = tk.Button(new_win, text="mount unraid", command=lambda: run_script("/home/nortron/.local/share/scripts/unraid.sh", new_status_label))
     mount_unraid_btn.pack(pady=10)
 
+    unmount_unraid_btn = tk.Button(new_win, text="un mount", command=lambda: run_script("/home/nortron/.local/share/scripts/uunraid.sh", new_status_label))
+    unmount_unraid_btn.pack(pady=10)
+
     new_status_label = tk.Label(new_win, text="Ready", bg="black", fg="white", font=("Arial", 12))
     new_status_label.pack(pady=10)
 
