@@ -113,7 +113,7 @@ def open_new_window():
 
     new_win = tk.Toplevel(root)
     new_win.title("New Tkinter Window")
-    new_win.geometry(f"{500}x{300}+{x}+{y}")
+    new_win.attributes('-fullscreen', True)
     new_win.configure(bg="black")  # Set the background color to black
     label = tk.Label(new_win, text="This is another Tkinter window!", font=("Arial", 12))
     
@@ -137,5 +137,3 @@ work11_button.grid(row=0, column=11, padx=10, pady=10)
 
 # Start the Tkinter event loop
 root.mainloop()
-
-
