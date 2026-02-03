@@ -111,10 +111,19 @@ def open_new_window():
     width = root.winfo_width()
     height = root.winfo_height()
 
+    root.withdraw()
+
     new_win = tk.Toplevel(root)
     new_win.title("New Tkinter Window")
     new_win.attributes('-fullscreen', True)
     new_win.configure(bg="black")  # Set the background color to black
+
+    def on_close():
+        root.deiconify()
+        new_win.destroy()
+    new_win.protocol("WM_DELETE_WINDOW", on_close)
+    new_win.bind("<Escape>", lambda e: on_close())
+
     label = tk.Label(new_win, text="This is another Tkinter window!", font=("Arial", 12))
     
     label.pack(pady=20)
@@ -126,6 +135,9 @@ def open_new_window():
         command=lambda: run_script("/home/nortron/.local/share/scripts/suspend_desk.sh")
     )
     run_btn.pack(pady=10)
+
+    back_btn = tk.Button(new_win, text="Back", command=on_close)
+    back_btn.pack(pady=10)
 
 # Add this button to the top row (for example, after the last button)
 open_window_button = tk.Button(root, text="Open Window", command=open_new_window)
