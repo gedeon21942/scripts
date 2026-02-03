@@ -88,15 +88,17 @@ arch_menu() {
     echo -e "${WHITE}2)${NC} Install yay (AUR helper)"
     echo -e "${WHITE}3)${NC} Setup Samba credentials"
     echo -e "${WHITE}4)${NC} Install Dotfiles"
-    echo -e "${WHITE}5)${NC} Back to main menu"
+    echo -e "${WHITE}5)${NC} ititus"
+    echo -e "${WHITE}6)${NC} Back to main menu"
     echo -e "${BLUE}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
-    read -r -p "$(echo -e "${YELLOW}Select an option (1-5): ${NC}")" aopt
+    read -r -p "$(echo -e "${YELLOW}Select an option (1-6): ${NC}")" aopt
     case "$aopt" in
       1) arch_server ;; 
       2) install_yay ;;
       3) setup_samba_creds ;;
       4) install_dotfiles ;;
-      5) return 0 ;;
+      5) ititus ;;
+      6) return 0 ;;
       *) echo -e "${RED}Invalid choice. Please try again.${NC}" ;;
     esac
   done
@@ -173,6 +175,15 @@ install_dotfiles() {
     bash "$script_path"
   else
     err "Dotfiles script not found at $script_path"
+  fi
+}
+
+ititus() {
+  echo -e "${MAGENTA}🚀 Launching Chris Titus' Linux script...${NC}"
+  if confirm "$(echo -e "${YELLOW}This will download and execute a script from christitus.com. Are you sure?${NC}")"; then
+    curl -fsSL https://christitus.com/linux | sh
+  else
+    log "Operation cancelled."
   fi
 }
 
