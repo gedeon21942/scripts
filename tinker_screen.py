@@ -147,5 +147,9 @@ open_window_button.grid(row=0, column=10, padx=10, pady=10)
 work11_button = tk.Button(root, text="Work11", command=lambda: run_script("/home/nortron/.local/share/scripts/work11.sh"))
 work11_button.grid(row=0, column=11, padx=10, pady=10)
 
+# Add a button under 'Open Window' to run unraid.sh
+mount_unraid_button = tk.Button(root, text="mount unraid", command=lambda: run_script("/home/nortron/.local/share/scripts/unraid.sh"))
+mount_unraid_button.grid(row=1, column=10, padx=10, pady=10)
+
 # Start the Tkinter event loop
 root.mainloop()
