@@ -4,6 +4,8 @@ import subprocess
 import os
 import sys
 import threading
+import difflib
+from tkinter import messagebox, scrolledtext
 
 # Function to run a script and update the status label
 def run_script(script_path, label=None):
@@ -104,6 +106,79 @@ def refresh_script():
 refresh_button = tk.Button(root, text="Refresh", command=refresh_script, bg="blue", fg="white", font=("Arial", 10, "bold"))
 refresh_button.grid(row=1, column=6, padx=10, pady=10)
 
+def compare_aliases_gui():
+    local_file = os.path.expanduser("~/.aliases.zsh")
+    server_file = "/mnt/share/unraid/Backup/Arch/server/.aliases.zsh"
+
+    # Ensure Unraid is mounted
+    if not os.path.exists("/mnt/share/unraid/Backup"):
+        subprocess.run(["bash", "/home/nortron/.local/share/scripts/unraid.sh"])
+
+    if not os.path.exists(server_file):
+        messagebox.showerror("Error", f"Server file not found:\n{server_file}\nMake sure Unraid is mounted.")
+        return
+
+    try:
+        with open(local_file, 'r') as f:
+            local_lines = f.readlines()
+        with open(server_file, 'r') as f:
+            server_lines = f.readlines()
+    except Exception as e:
+        messagebox.showerror("Error", f"Failed to read files: {e}")
+        return
+
+    diff = list(difflib.unified_diff(local_lines, server_lines, fromfile='Local', tofile='Server'))
+
+    if not diff:
+        messagebox.showinfo("Compare Aliases", "Files are identical.")
+        return
+
+    # Create Diff Window
+    diff_win = tk.Toplevel(root)
+    diff_win.title("Compare Aliases - Diff")
+    diff_win.geometry("900x700")
+    diff_win.configure(bg="black")
+
+    # Text Area
+    txt = scrolledtext.ScrolledText(diff_win, bg="#1e1e1e", fg="#d4d4d4", font=("Consolas", 11))
+    txt.pack(expand=True, fill="both", padx=10, pady=10)
+
+    for line in diff:
+        tag = "normal"
+        if line.startswith("---") or line.startswith("+++"): tag = "header"
+        elif line.startswith("-"): tag = "removed"
+        elif line.startswith("+"): tag = "added"
+        elif line.startswith("@@"): tag = "meta"
+        txt.insert(tk.END, line, tag)
+
+    txt.tag_config("header", foreground="#569cd6")
+    txt.tag_config("removed", foreground="#f44747")
+    txt.tag_config("added", foreground="#6a9955")
+    txt.tag_config("meta", foreground="#dcdcaa")
+    txt.configure(state="disabled")
+
+    # Buttons
+    btn_frame = tk.Frame(diff_win, bg="black")
+    btn_frame.pack(fill="x", pady=10)
+
+    def push():
+        if messagebox.askyesno("Confirm Push", "Overwrite SERVER file with LOCAL version?"):
+            subprocess.run(["sudo", "cp", local_file, server_file])
+            messagebox.showinfo("Success", "Server file updated.")
+            diff_win.destroy()
+
+    def pull():
+        if messagebox.askyesno("Confirm Pull", "Overwrite LOCAL file with SERVER version?"):
+            subprocess.run(["sudo", "cp", server_file, local_file])
+            user = os.environ.get('USER', 'nortron')
+            subprocess.run(["sudo", "chown", f"{user}:{user}", local_file])
+            messagebox.showinfo("Success", "Local file updated.")
+            diff_win.destroy()
+
+    tk.Button(btn_frame, text="Pull (Server -> Local)", command=pull, bg="green", fg="white", font=("Arial", 10, "bold")).pack(side="left", padx=20)
+    tk.Button(btn_frame, text="Push (Local -> Server)", command=push, bg="blue", fg="white", font=("Arial", 10, "bold")).pack(side="left", padx=20)
+    tk.Button(btn_frame, text="Cancel", command=diff_win.destroy, bg="red", fg="white", font=("Arial", 10, "bold")).pack(side="right", padx=20)
+
 def open_new_window():
     # Get the main window's position and size
     root.update_idletasks()
@@ -143,7 +218,7 @@ def open_new_window():
     unmount_unraid_btn = tk.Button(new_win, text="un mount", command=lambda: run_script("/home/nortron/.local/share/scripts/uunraid.sh", new_status_label))
     unmount_unraid_btn.pack(pady=10)
 
-    compare_btn = tk.Button(new_win, text="Compare Aliases", command=lambda: subprocess.Popen(["kitty", "--title", "Compare Aliases", "bash", "-c", "/home/nortron/.local/share/scripts/compare_aliases.sh"]))
+    compare_btn = tk.Button(new_win, text="Compare Aliases", command=compare_aliases_gui)
     compare_btn.pack(pady=10)
 
     new_status_label = tk.Label(new_win, text="Ready", bg="black", fg="white", font=("Arial", 12))
