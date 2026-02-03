@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/zsh
 
 LOCAL_FILE="$HOME/.aliases.zsh"
 SERVER_FILE="/mnt/share/unraid/Backup/Arch/server/.aliases.zsh"
@@ -12,7 +12,7 @@ fi
 if [ ! -f "$SERVER_FILE" ]; then
     echo "Error: Server file not found at $SERVER_FILE"
     echo "Make sure Unraid is mounted and the path is correct."
-    read -p "Press Enter to exit..."
+    read "?Press Enter to exit..."
     exit 1
 fi
 
@@ -31,14 +31,14 @@ else
     echo "2) Replace SERVER file with LOCAL version (Push)"
     echo "3) Do nothing"
     echo ""
-    read -p "Enter choice (1/2/3): " choice
+    read "choice?Enter choice (1/2/3): "
 
     case "$choice" in
         1)
             sudo cp "$SERVER_FILE" "$LOCAL_FILE"
             sudo chown "$USER":"$USER" "$LOCAL_FILE"
             echo "Local .aliases.zsh updated from server."
-            echo "NOTE: Please run 'source ~/.zshrc' to apply the changes."
+            source "$HOME/.zshrc"
             ;;
         2)
             sudo cp "$LOCAL_FILE" "$SERVER_FILE"
@@ -51,4 +51,4 @@ else
 fi
 
 echo ""
-read -p "Press Enter to close..."
+read "?Press Enter to close..."

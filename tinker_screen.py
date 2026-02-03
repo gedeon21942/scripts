@@ -129,7 +129,7 @@ def run_cli_submenu():
             name, script = actions[choice]
             if choice == "4":
                 # Run interactive script in foreground
-                subprocess.run(["bash", script])
+                subprocess.run(["zsh", script])
             else:
                 run_script(script)
 
@@ -258,7 +258,7 @@ def run_gui():
                 subprocess.run(["sudo", "cp", server_file, local_file])
                 user = os.environ.get('USER', 'nortron')
                 subprocess.run(["sudo", "chown", f"{user}:{user}", local_file])
-                messagebox.showinfo("Success", "Local file updated.\n\nPlease open a new terminal or run 'source ~/.zshrc' to apply changes.")
+                messagebox.showinfo("Success", "Local file updated.")
                 diff_win.destroy()
 
         tk.Button(btn_frame, text="Pull (Server -> Local)", command=pull, bg="green", fg="white", font=("Arial", 10, "bold")).pack(side="left", padx=20)
