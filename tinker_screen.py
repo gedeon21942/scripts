@@ -6,18 +6,19 @@ import sys
 import threading
 
 # Function to run a script and update the status label
-def run_script(script_path):
+def run_script(script_path, label=None):
     def task():
-        status_label.config(text="Running...", fg="yellow")
-        root.update_idletasks()
+        target_label = label if label else status_label
+        target_label.config(text="Running...", fg="yellow")
+        target_label.update_idletasks()
         try:
             result = subprocess.run(["bash", script_path], check=True, capture_output=True, text=True)
-            status_label.config(text="100% - Done!", fg="green")
+            target_label.config(text="100% - Done!", fg="green")
             # Log stdout
             with open("/tmp/unraid_gui.log", "a") as logf:
                 logf.write(f"\n[{script_path}] STDOUT:\n{result.stdout}\n")
         except subprocess.CalledProcessError as e:
-            status_label.config(text="Error!", fg="red")
+            target_label.config(text="Error!", fg="red")
             with open("/tmp/unraid_gui.log", "a") as logf:
                 logf.write(f"\n[{script_path}] ERROR:\nReturn code: {e.returncode}\nSTDOUT:\n{e.stdout}\nSTDERR:\n{e.stderr}\n")
             print(f"Error running script {script_path}: {e}")
@@ -132,12 +133,15 @@ def open_new_window():
     run_btn = tk.Button(
         new_win,
         text="Suspend Desk",
-        command=lambda: run_script("/home/nortron/.local/share/scripts/suspend_desk.sh")
+        command=lambda: run_script("/home/nortron/.local/share/scripts/suspend_desk.sh", new_status_label)
     )
     run_btn.pack(pady=10)
 
-    mount_unraid_btn = tk.Button(new_win, text="mount unraid", command=lambda: run_script("/home/nortron/.local/share/scripts/unraid.sh"))
+    mount_unraid_btn = tk.Button(new_win, text="mount unraid", command=lambda: run_script("/home/nortron/.local/share/scripts/unraid.sh", new_status_label))
     mount_unraid_btn.pack(pady=10)
+
+    new_status_label = tk.Label(new_win, text="Ready", bg="black", fg="white", font=("Arial", 12))
+    new_status_label.pack(pady=10)
 
     back_btn = tk.Button(new_win, text="Back", command=on_close)
     back_btn.pack(pady=10)
