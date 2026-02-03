@@ -38,6 +38,7 @@ else
             sudo cp "$SERVER_FILE" "$LOCAL_FILE"
             sudo chown "$USER":"$USER" "$LOCAL_FILE"
             echo "Local .aliases.zsh updated from server."
+            echo "NOTE: Please run 'source ~/.zshrc' to apply the changes."
             ;;
         2)
             sudo cp "$LOCAL_FILE" "$SERVER_FILE"

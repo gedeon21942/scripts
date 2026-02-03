@@ -258,7 +258,7 @@ def run_gui():
                 subprocess.run(["sudo", "cp", server_file, local_file])
                 user = os.environ.get('USER', 'nortron')
                 subprocess.run(["sudo", "chown", f"{user}:{user}", local_file])
-                messagebox.showinfo("Success", "Local file updated.")
+                messagebox.showinfo("Success", "Local file updated.\n\nPlease open a new terminal or run 'source ~/.zshrc' to apply changes.")
                 diff_win.destroy()
 
         tk.Button(btn_frame, text="Pull (Server -> Local)", command=pull, bg="green", fg="white", font=("Arial", 10, "bold")).pack(side="left", padx=20)
