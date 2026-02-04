@@ -313,7 +313,7 @@ def run_gui():
 
         def run_linutil():
             subprocess.Popen(["kitty", "--title", "Linutil", "bash", "/home/nortron/.local/share/scripts/linutil/install.sh"])
-            new_win.iconify()
+            new_win.withdraw()
 
         linutil_btn = tk.Button(new_win, text="linutil", command=run_linutil)
         linutil_btn.pack(pady=10)
