@@ -114,7 +114,8 @@ def run_cli_submenu():
         "2": ("Mount Unraid", "/home/nortron/.local/share/scripts/unraid.sh"),
         "3": ("Unmount Unraid", "/home/nortron/.local/share/scripts/uunraid.sh"),
         "4": ("Compare Aliases", "/home/nortron/.local/share/scripts/compare_aliases.sh"),
-        "5": ("Work11", "/home/nortron/.local/share/scripts/work11.sh")
+        "5": ("Work11", "/home/nortron/.local/share/scripts/work11.sh"),
+        "6": ("GUI", "/home/nortron/.local/share/scripts/tk.sh")
     }
     while True:
         print("\nSubmenu Options:")
@@ -306,6 +307,9 @@ def run_gui():
 
         compare_btn = tk.Button(new_win, text="Compare Aliases", command=compare_aliases_gui)
         compare_btn.pack(pady=10)
+
+        gui_btn = tk.Button(new_win, text="GUI", command=lambda: run_script("/home/nortron/.local/share/scripts/tk.sh", new_status_label))
+        gui_btn.pack(pady=10)
 
         new_status_label = tk.Label(new_win, text="Ready", bg="black", fg="white", font=("Arial", 12))
         new_status_label.pack(pady=10)
