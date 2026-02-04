@@ -311,9 +311,6 @@ def run_gui():
         compare_btn = tk.Button(new_win, text="Compare Aliases", command=compare_aliases_gui)
         compare_btn.pack(pady=10)
 
-        gui_btn = tk.Button(new_win, text="GUI", command=lambda: run_script("/home/nortron/.local/share/scripts/tk.sh", new_status_label))
-        gui_btn.pack(pady=10)
-
         new_status_label = tk.Label(new_win, text="Ready", bg="black", fg="white", font=("Arial", 12))
         new_status_label.pack(pady=10)
 
