@@ -116,6 +116,7 @@ def run_cli_submenu():
         "4": ("Compare Aliases", "/home/nortron/.local/share/scripts/compare_aliases.sh"),
         "5": ("Work11", "/home/nortron/.local/share/scripts/work11.sh"),
         "6": ("linutil", "/home/nortron/.local/share/scripts/linutil/install.sh")
+        
     }
     while True:
         print("\nSubmenu Options:")
@@ -131,6 +132,8 @@ def run_cli_submenu():
             if choice == "4":
                 # Run interactive script in foreground
                 subprocess.run(["zsh", script])
+            elif choice == "6":
+                subprocess.run(["bash", script])
             else:
                 run_script(script)
 
