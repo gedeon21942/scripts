@@ -115,7 +115,7 @@ def run_cli_submenu():
         "3": ("Unmount Unraid", "/home/nortron/.local/share/scripts/uunraid.sh"),
         "4": ("Compare Aliases", "/home/nortron/.local/share/scripts/compare_aliases.sh"),
         "5": ("Work11", "/home/nortron/.local/share/scripts/work11.sh"),
-        "6": ("GUI", "/home/nortron/.local/share/scripts/tk.sh")
+        "6": ("linutil", "/home/nortron/.local/share/scripts/linutil/install.sh")
     }
     while True:
         print("\nSubmenu Options:")
