@@ -336,7 +336,18 @@ def run_gui():
     root.mainloop()
 
 if __name__ == "__main__":
-    if os.environ.get('DISPLAY'):
-        run_gui()
+    # Check for command-line arguments to force GUI or CLI mode
+    if len(sys.argv) > 1:
+        if sys.argv[1] == "--cli":
+            run_cli()
+        elif sys.argv[1] == "--gui":
+            run_gui()
+        else:
+            print("Usage: tinker_screen.py [--cli|--gui]")
+            sys.exit(1)
     else:
-        run_cli()
+        # Auto-detect: use GUI if DISPLAY is available, otherwise CLI
+        if os.environ.get('DISPLAY'):
+            run_gui()
+        else:
+            run_cli()
